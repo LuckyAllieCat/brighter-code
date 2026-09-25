@@ -4,33 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Brighter Code</title>
-<meta name="theme-color" content="#23313b">
+<meta name="theme-color" content="#1d9fe6">
+<script>try { if (localStorage.getItem('brighterCode.theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-:root {
-  --nav: #23313b; --nav-text: #e9eff3; --nav-active: #7fd08d;
-  --bg: #f5f7f8; --panel: #ffffff; --text: #1d262d; --muted: #5f6d77; --line: #dde3e7;
-  --accent: #2f8f46; --accent-text: #ffffff; --link: #1f6fb2;
-  --ok-bg: #e3f4e6; --ok-line: #9fd3aa; --ok-text: #1d5e2c;
-  --bad-bg: #fbe9e9; --bad-line: #eeb2b2; --bad-text: #8a2323;
-  --info-bg: #eef4fa; --info-line: #c4d8ea;
-  --code-bg: #f0f3f5; --editor-bg: #fbfcfc; --tag: #e7edf1; --key: #ffffff; --key-bar: #d9e0e5;
+:root {   /* light (default): white and blue, like AnkiDroid */
+  --nav: #1d9fe6; --nav-text: #ffffff; --nav-active: #ffffff;
+  --bg: #ffffff; --panel: #ffffff; --text: #1b1f22; --muted: #5f6b74; --line: #e2e7eb;
+  --accent: #1d9fe6; --accent-text: #ffffff; --link: #1565c0; --done: #43a047;
+  --ok-bg: #e8f5e9; --ok-line: #a5d6a7; --ok-text: #1b5e20;
+  --bad-bg: #fdecea; --bad-line: #f5b5b0; --bad-text: #8e1c16;
+  --info-bg: #e8f4fd; --info-line: #b9dcf6;
+  --code-bg: #f3f6f8; --editor-bg: #ffffff; --tag: #e3f2fd; --tag-text: #1565c0; --key: #ffffff; --key-bar: #dfe7ed;
   --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", monospace;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --nav: #151d23; --nav-text: #dfe7ec; --nav-active: #7fd08d;
-    --bg: #1a2127; --panel: #222b32; --text: #e3e9ed; --muted: #9aa8b2; --line: #33404a;
-    --accent: #2f8f46; --accent-text: #ffffff; --link: #7ab8ec;
-    --ok-bg: #1d3524; --ok-line: #2f6b3d; --ok-text: #a8e2b4;
-    --bad-bg: #3a2224; --bad-line: #7a3a3e; --bad-text: #f1b1b1;
-    --info-bg: #1f2e3b; --info-line: #34506a;
-    --code-bg: #1b2328; --editor-bg: #1b2328; --tag: #2d3942; --key: #33414b; --key-bar: #151d23;
-    color-scheme: dark;
-  }
+:root[data-theme="dark"] {
+  --nav: #1e2a33; --nav-text: #e8eef2; --nav-active: #64b5f6;
+  --bg: #1c1f22; --panel: #25292d; --text: #e6eaed; --muted: #9aa5ad; --line: #353b41;
+  --accent: #1a86c4; --accent-text: #ffffff; --link: #7ab8ec; --done: #66bb6a;
+  --ok-bg: #1d3524; --ok-line: #2f6b3d; --ok-text: #a8e2b4;
+  --bad-bg: #3a2224; --bad-line: #7a3a3e; --bad-text: #f1b1b1;
+  --info-bg: #1f2e3b; --info-line: #34506a;
+  --code-bg: #1b1f23; --editor-bg: #1b1f23; --tag: #243745; --tag-text: #9ccdf3; --key: #353b41; --key-bar: #141719;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -48,6 +47,14 @@ nav.top .in { max-width: 920px; margin: 0 auto; display: flex; align-items: cent
 .tabs { display: flex; gap: 4px; margin-left: auto; }
 .tabs a { color: var(--nav-text); text-decoration: none; padding: 14px 10px 12px; border-bottom: 3px solid transparent; font-weight: 600; opacity: .85; }
 .tabs a.on { border-bottom-color: var(--nav-active); opacity: 1; }
+.gear { color: var(--nav-text); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; opacity: .9; }
+.gear:hover { background: rgba(255,255,255,.14); }
+.gear svg { width: 22px; height: 22px; fill: currentColor; }
+.setting { display: flex; justify-content: space-between; align-items: center; gap: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; max-width: 560px; }
+.setting p { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
+.seg { display: inline-flex; border: 1px solid var(--accent); border-radius: 6px; overflow: hidden; flex: none; }
+.seg button { border: 0; background: var(--panel); color: var(--accent); padding: 7px 16px; font-weight: 600; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); }
 
 main { max-width: 920px; margin: 0 auto; padding: 20px 16px 48px; }
 h1 { font-size: 28px; line-height: 1.2; margin: 0 0 6px; text-wrap: balance; }
@@ -69,12 +76,12 @@ ol.ex { list-style: none; margin: 0; padding: 0; }
 ol.ex a { display: grid; grid-template-columns: 22px 2.1em 1fr auto; align-items: baseline; gap: 8px; padding: 9px 4px; border-top: 1px solid var(--line); color: var(--text); text-decoration: none; }
 ol.ex a:hover { background: var(--bg); }
 .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); display: inline-block; transform: translateY(2px); }
-.dot.ok { background: var(--accent); border-color: var(--accent); position: relative; }
+.dot.ok { background: var(--done); border-color: var(--done); position: relative; }
 .dot.ok::after { content: ""; position: absolute; left: 3px; top: 0; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .num { color: var(--muted); font-variant-numeric: tabular-nums; }
 .ttl { min-width: 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.35; }
 .ttl code { font-size: .88em; }
-.tag { font-size: 12px; background: var(--tag); color: var(--muted); padding: 1px 8px; border-radius: 10px; white-space: nowrap; font-weight: 600; }
+.tag { font-size: 12px; background: var(--tag); color: var(--tag-text); padding: 1px 8px; border-radius: 10px; white-space: nowrap; font-weight: 600; }
 
 /* exercise page */
 .crumbs { font-size: 15px; color: var(--muted); margin-bottom: 6px; }
@@ -138,6 +145,7 @@ body.typing main { padding-bottom: 120px; }
 <nav class="top"><div class="in">
   <a class="brand" href="#/"><span class="mark">&gt;_</span>Brighter Code</a>
   <div class="tabs" id="tabs"></div>
+  <a class="gear" href="#/settings" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></a>
 </div></nav>
 <main id="main"></main>
 <div class="keys" id="keys" hidden></div>
@@ -512,10 +520,26 @@ async function submit() {
 }
 
 /* ---------- routing ---------- */
+function settings() {
+  tabs('');
+  const dark = document.documentElement.dataset.theme === 'dark';
+  main.innerHTML = `<h1>Settings</h1><p class="sub">Saved in this browser.</p>
+    <div class="setting"><div><b>Theme</b><p>Light is white and blue. Dark is easier on the eyes at night.</p></div>
+      <div class="seg" role="group" aria-label="Theme"><button data-theme="light" aria-pressed="${!dark}">Light</button><button data-theme="dark" aria-pressed="${dark}">Dark</button></div></div>`;
+  main.querySelectorAll('.seg button').forEach(b => b.onclick = () => { setTheme(b.dataset.theme); settings(); });
+}
+function setTheme(t) {
+  if (t === 'dark') document.documentElement.dataset.theme = 'dark'; else delete document.documentElement.dataset.theme;
+  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#1e2a33' : '#1d9fe6';
+  try { localStorage.setItem('brighterCode.theme', t); } catch (e) {}
+}
+if (document.documentElement.dataset.theme === 'dark') document.querySelector('meta[name=theme-color]').content = '#1e2a33';
+
 function route() {
   const [, sk, id] = location.hash.split('/').map(decodeURIComponent);
   keysEl.hidden = true; document.body.classList.remove('typing');
-  if (sk && id && EX[id]) exercisePage(id);
+  if (sk === 'settings') { cur = null; settings(); window.scrollTo(0, 0); }
+  else if (sk && id && EX[id]) exercisePage(id);
   else if (sk && SUBJ[sk]) { cur = null; list(sk); window.scrollTo(0, 0); }
   else { cur = null; home(); }
 }
